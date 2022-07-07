@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
 export type HandlerType = (event: EventTypes) => void;
@@ -19,9 +19,11 @@ export function EventProvider({
   events = ['click'],
   children,
 }: EventProviderProps) {
-  const [handlers] = React.useState<HandlerType[]>([]);
+  const state = React.useState<HandlerType[]>([]);
+  const handlers = state[0]; // reduce transpiled array helpers 
+
   function onEvent(event: EventTypes) {
-    handlers.forEach((subscriber) => subscriber(event));
+    handlers.forEach((handler: HandlerType) => handler(event));
   }
   function subscribe(handler: HandlerType) {
     handlers.push(handler);
@@ -50,4 +52,10 @@ export function useEvent(handler, dependencies) {
     () => subscribe(handler),
     [subscribe, handler].concat(dependencies),
   );
+}
+
+export default {
+  EventContext,
+  EventProvider,
+  useEvent
 }
