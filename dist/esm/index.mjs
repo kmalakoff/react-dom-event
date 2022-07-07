@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 export const EventContext = /*#__PURE__*/ React.createContext(undefined);
 export function EventProvider({ events =[
     'click'
 ] , children  }) {
-    const [handlers] = React.useState([]);
+    const state = React.useState([]);
+    const handlers = state[0]; // reduce transpiled array helpers 
     function onEvent(event) {
-        handlers.forEach((subscriber)=>subscriber(event));
+        handlers.forEach((handler)=>handler(event));
     }
     function subscribe(handler) {
         handlers.push(handler);
@@ -28,3 +29,8 @@ export function useEvent(handler, dependencies) {
         handler
     ].concat(dependencies));
 }
+export default {
+    EventContext,
+    EventProvider,
+    useEvent
+};

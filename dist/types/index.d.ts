@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 export declare type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
 export declare type HandlerType = (event: EventTypes) => void;
 export declare type EventContextType = {
@@ -11,3 +11,9 @@ export declare type EventProviderProps = {
 };
 export declare function EventProvider({ events, children, }: EventProviderProps): JSX.Element;
 export declare function useEvent(handler: any, dependencies: any): void;
+declare const _default: {
+    EventContext: React.Context<EventContextType>;
+    EventProvider: typeof EventProvider;
+    useEvent: typeof useEvent;
+};
+export default _default;
