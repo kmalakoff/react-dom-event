@@ -1,0 +1,73 @@
+{
+  "name": "react-dom-event",
+  "version": "0.0.0",
+  "description": "React context for subscribing to all DOM user interaction events",
+  "keywords": [
+    "react-native-web",
+    "react",
+    "native",
+    "web",
+    "dom",
+    "outside",
+    "click",
+    "press",
+    "touch",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
+  "files": [
+    "dist"
+  ],
+  "tsds": {
+    "source": "src/index.tsx",
+    "globals": {
+      "react": "React"
+    }
+  },
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "types": "dist/types/index.d.ts",
+  "repository": "kmalakoff/react-dom-event",
+  "scripts": {
+    "build": "tsds build",
+    "deploy": "tsds deploy",
+    "format": "tsds format",
+    "lint": "tsds lint",
+    "test": "tsds link && cross-env NODE_OPTIONS=--experimental-vm-modules jest jest test/**/*.test.*",
+    "coverage": "tsds link && cross-env NODE_OPTIONS=--experimental-vm-modules jest test/**/*.test.* --collect-coverage",
+    "test:engines": "nvu engines npm test",
+    "version": "tsds version"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^28.1.4",
+    "@types/react": "18.0.0",
+    "@types/react-native": "0.69.0",
+    "cross-env": "^7.0.3",
+    "jest": "^28.1.2",
+    "jest-environment-jsdom": "^28.1.2",
+    "metro-react-native-babel-preset": "^0.71.2",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-native": "0.69.0",
+    "react-native-web": "0.18.0",
+    "ts-dev-stack": "^0.6.6"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "unpkg": "dist/umd/react-dom-event.js"
+}
