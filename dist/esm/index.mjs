@@ -4,7 +4,7 @@ export function EventProvider({ events =[
     'click'
 ] , children  }) {
     const state = React.useState([]);
-    const handlers = state[0]; // reduce transpiled array helpers 
+    const handlers = state[0]; // reduce transpiled array helpers
     function onEvent(event) {
         handlers.forEach((handler)=>handler(event));
     }
@@ -24,7 +24,9 @@ export function EventProvider({ events =[
 }
 export function useEvent(handler, dependencies) {
     const context = React.useContext(EventContext);
-    if (!context.subscribe) throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
+    if (!context) {
+        throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
+    }
     React.useEffect(()=>context.subscribe(handler), [
         context.subscribe,
         handler

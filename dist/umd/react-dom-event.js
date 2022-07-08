@@ -25,7 +25,7 @@
           };
       };
       var state = React__default["default"].useState([]);
-      var handlers = state[0]; // reduce transpiled array helpers 
+      var handlers = state[0]; // reduce transpiled array helpers
       React__default["default"].useEffect(function() {
           events.forEach(function(event) {
               return window.document.addEventListener(event, onEvent, true);
@@ -44,7 +44,9 @@
   }
   function useEvent(handler, dependencies) {
       var context = React__default["default"].useContext(EventContext);
-      if (!context.subscribe) throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
+      if (!context) {
+          throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
+      }
       React__default["default"].useEffect(function() {
           return context.subscribe(handler);
       }, [
