@@ -26,15 +26,15 @@ root.render(
   <React.Fragment>
     <EventProvider events={['click'] /* default */}>
       <UseEventComponent />
-      <button id='demo-1' onClick={() => {}}/>
+      <button id="demo-1" onClick={() => {}} />
     </EventProvider>
-    <button id='demo-2' onClick={() => {}}/>
-  </React.Fragment>
+    <button id="demo-2" onClick={() => {}} />
+  </React.Fragment>,
 );
 
 // any click will call the global event handler
-document.getElementById('demo-1').click()
-document.getElementById('demo-2').click()
+document.getElementById('demo-1').click();
+document.getElementById('demo-2').click();
 ```
 
 ### Documentation
