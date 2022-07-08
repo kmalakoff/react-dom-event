@@ -47,15 +47,11 @@ export function EventProvider({
 }
 
 export function useEvent(handler, dependencies) {
-  const { subscribe } = React.useContext(EventContext);
-  React.useEffect(
-    () => subscribe(handler),
-    [subscribe, handler].concat(dependencies),
-  );
-}
+  const context = React.useContext(EventContext);
+  if (!context.subscribe) throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event')
 
-export default {
-  EventContext,
-  EventProvider,
-  useEvent
+  React.useEffect(
+    () => context.subscribe(handler),
+    [context.subscribe, handler].concat(dependencies),
+  );
 }
