@@ -43,23 +43,18 @@
       }, children);
   }
   function useEvent(handler, dependencies) {
-      var subscribe = React__default["default"].useContext(EventContext).subscribe;
+      var context = React__default["default"].useContext(EventContext);
+      if (!context.subscribe) throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
       React__default["default"].useEffect(function() {
-          return subscribe(handler);
+          return context.subscribe(handler);
       }, [
-          subscribe,
+          context.subscribe,
           handler
       ].concat(dependencies));
   }
-  var index = {
-      EventContext: EventContext,
-      EventProvider: EventProvider,
-      useEvent: useEvent
-  };
 
   exports.EventContext = EventContext;
   exports.EventProvider = EventProvider;
-  exports["default"] = index;
   exports.useEvent = useEvent;
 
   Object.defineProperty(exports, '__esModule', { value: true });

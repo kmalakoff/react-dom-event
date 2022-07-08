@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EventProvider = EventProvider;
 exports.useEvent = useEvent;
-module.exports = exports.EventContext = void 0;
+exports.EventContext = void 0;
 var _react = _interopRequireDefault(require("react"));
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -47,17 +47,12 @@ function EventProvider(param) {
     }, children);
 }
 function useEvent(handler, dependencies) {
-    var subscribe = _react.default.useContext(EventContext).subscribe;
+    var context = _react.default.useContext(EventContext);
+    if (!context.subscribe) throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
     _react.default.useEffect(function() {
-        return subscribe(handler);
+        return context.subscribe(handler);
     }, [
-        subscribe,
+        context.subscribe,
         handler
     ].concat(dependencies));
 }
-var _default = {
-    EventContext: EventContext,
-    EventProvider: EventProvider,
-    useEvent: useEvent
-};
-module.exports = _default;
