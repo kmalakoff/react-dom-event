@@ -50,17 +50,17 @@
   "devDependencies": {
     "@types/jest": "^28.1.4",
     "@types/react": "18.0.15",
-    "jsdom": "^15.2.1",
+    "jsdom": "^9.12.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.18.4",
-    "ts-dev-stack": "^0.6.6"
+    "ts-dev-stack": "^0.6.7"
   },
   "peerDependencies": {
     "react": "*"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=4"
   },
   "unpkg": "dist/umd/react-dom-event.js"
 }
