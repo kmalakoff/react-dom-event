@@ -1,16 +1,31 @@
-/**
- * @jest-environment jsdom
- */
+global.IS_REACT_ACT_ENVIRONMENT = true;
 
 import assert from 'assert';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { createRoot, Root } from 'react-dom/client';
+import { act } from 'react-dom/test-utils';
 
 import { View } from 'react-native-web';
 import { useEvent, EventProvider } from 'react-dom-event';
+import getByTestId from '../lib/getByTestId';
 
 describe('react-native-web', function () {
-  it('click', async function () {
+  let container: HTMLDivElement | null = null;
+  let root: Root | null = null;
+  beforeEach(function () {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+    root = createRoot(container);
+  });
+
+  afterEach(function () {
+    act(() => root.unmount());
+    root = null;
+    container.remove();
+    container = null;
+  });
+
+  it('click', function () {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <React.Fragment />;
@@ -32,24 +47,22 @@ describe('react-native-web', function () {
     const onClick = (x) => (clickValue = x);
     let eventValue;
     const onEvent = (x) => (eventValue = x);
-    const { findByTestId } = render(
-      <Component onClick={onClick} onEvent={onEvent} />,
-    );
+    act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
 
     // inside
     clickValue = undefined;
     eventValue = undefined;
-    fireEvent.click(await findByTestId('inside'));
-    assert.equal(clickValue.target, await findByTestId('inside'));
+    act(() => (getByTestId(container, 'inside') as HTMLElement).click());
+    assert.equal(clickValue.target, getByTestId(container, 'inside'));
     assert.ok(!!eventValue);
 
     // outside
     clickValue = undefined;
     eventValue = undefined;
-    fireEvent.click(await findByTestId('outside'));
-    assert.equal(clickValue.target, await findByTestId('outside'));
+    act(() => (getByTestId(container, 'outside') as HTMLElement).click());
+    assert.equal(clickValue.target, getByTestId(container, 'outside'));
     assert.ok(!!eventValue);
   });
 });
