@@ -39,7 +39,7 @@
     "format": "tsds format",
     "lint": "tsds lint",
     "test": "tsds test:node && tsds test:browser",
-    "test:engines": "tsds test:browser && nvu engines tsds test:node",
+    "test:engines": "nvu engines tsds test:node && tsds test:browser",
     "version": "tsds version"
   },
   "devDependencies": {
@@ -49,7 +49,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.18.4",
-    "ts-dev-stack": "^0.6.12"
+    "ts-dev-stack": "^0.6.15"
   },
   "peerDependencies": {
     "react": "*"
