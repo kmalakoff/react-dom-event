@@ -10,6 +10,7 @@
   global.ResizeObserver = function ResizeObserver() {};
 })();
 
-if (!Array.prototype.includes) Array.prototype.includes = function(x) {
-  this.indexOf(x) >=0;  
-}
+if (!Array.prototype.includes)
+  Array.prototype.includes = function (x) {
+    this.indexOf(x) >= 0;
+  };
