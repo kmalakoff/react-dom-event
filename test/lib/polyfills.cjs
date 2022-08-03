@@ -6,8 +6,12 @@
   global.document = doc;
   global.window = doc.defaultView;
   global.navigator = doc.defaultView.navigator;
-  global.ShadowRoot = function ShadowRoot() {};
-  global.ResizeObserver = function ResizeObserver() {};
+  global.ShadowRoot = function ShadowRoot() {
+    /* empty */
+  };
+  global.ResizeObserver = function ResizeObserver() {
+    /* empty */
+  };
 })();
 
 if (!Array.prototype.includes)
