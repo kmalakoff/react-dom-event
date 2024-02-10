@@ -19,31 +19,26 @@ _export(exports, {
         return useEvent;
     }
 });
-var _react = /*#__PURE__*/ _interopRequireDefault(require("react"));
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
-}
-var EventContext = /*#__PURE__*/ _react.default.createContext(undefined);
+var _react = require("react");
+var EventContext = (0, _react.createContext)(undefined);
 function EventProvider(param) {
-    var _events = param.events, events = _events === void 0 ? [
+    var _param_events = param.events, events = _param_events === void 0 ? [
         "click"
-    ] : _events, children = param.children;
-    var onEvent = function onEvent(event) {
+    ] : _param_events, children = param.children;
+    var state = (0, _react.useState)([]);
+    var handlers = state[0]; // reduce transpiled array helpers
+    function onEvent(event) {
         handlers.forEach(function(handler) {
             return handler(event);
         });
-    };
-    var subscribe = function subscribe(handler) {
+    }
+    function subscribe(handler) {
         handlers.push(handler);
         return function() {
             return handlers.splice(handlers.indexOf(handler), 1);
         };
-    };
-    var state = _react.default.useState([]);
-    var handlers = state[0]; // reduce transpiled array helpers
-    _react.default.useEffect(function() {
+    }
+    (0, _react.useEffect)(function() {
         events.forEach(function(event) {
             return window.document.addEventListener(event, onEvent, true);
         });
@@ -53,18 +48,18 @@ function EventProvider(param) {
             });
         };
     });
-    return /*#__PURE__*/ _react.default.createElement(EventContext.Provider, {
+    return (0, _react.createElement)(EventContext.Provider, {
         value: {
             subscribe: subscribe
         }
     }, children);
 }
 function useEvent(handler, dependencies) {
-    var context = _react.default.useContext(EventContext);
+    var context = (0, _react.useContext)(EventContext);
     if (!context) {
         throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
     }
-    _react.default.useEffect(function() {
+    (0, _react.useEffect)(function() {
         return context.subscribe(handler);
     }, [
         context.subscribe,

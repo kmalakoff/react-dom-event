@@ -2,31 +2,27 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react')) :
   typeof define === 'function' && define.amd ? define(['exports', 'react'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.reactDomEvent = {}, global.React));
-})(this, (function (exports, React) { 'use strict';
+})(this, (function (exports, react) { 'use strict';
 
-  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-  var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-
-  var EventContext = /*#__PURE__*/ React__default["default"].createContext(undefined);
+  var EventContext = react.createContext(undefined);
   function EventProvider(param) {
-      var _events = param.events, events = _events === void 0 ? [
+      var _param_events = param.events, events = _param_events === void 0 ? [
           "click"
-      ] : _events, children = param.children;
-      var onEvent = function onEvent(event) {
+      ] : _param_events, children = param.children;
+      var state = react.useState([]);
+      var handlers = state[0]; // reduce transpiled array helpers
+      function onEvent(event) {
           handlers.forEach(function(handler) {
               return handler(event);
           });
-      };
-      var subscribe = function subscribe(handler) {
+      }
+      function subscribe(handler) {
           handlers.push(handler);
           return function() {
               return handlers.splice(handlers.indexOf(handler), 1);
           };
-      };
-      var state = React__default["default"].useState([]);
-      var handlers = state[0]; // reduce transpiled array helpers
-      React__default["default"].useEffect(function() {
+      }
+      react.useEffect(function() {
           events.forEach(function(event) {
               return window.document.addEventListener(event, onEvent, true);
           });
@@ -36,18 +32,18 @@
               });
           };
       });
-      return /*#__PURE__*/ React__default["default"].createElement(EventContext.Provider, {
+      return react.createElement(EventContext.Provider, {
           value: {
               subscribe: subscribe
           }
       }, children);
   }
   function useEvent(handler, dependencies) {
-      var context = React__default["default"].useContext(EventContext);
+      var context = react.useContext(EventContext);
       if (!context) {
           throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
       }
-      React__default["default"].useEffect(function() {
+      react.useEffect(function() {
           return context.subscribe(handler);
       }, [
           context.subscribe,

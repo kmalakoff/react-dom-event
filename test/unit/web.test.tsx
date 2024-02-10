@@ -2,7 +2,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
-import React from 'react';
+import { Fragment } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 
@@ -29,7 +29,7 @@ describe('react-native-web', function () {
   it('click', function () {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
-      return <React.Fragment />;
+      return <Fragment />;
     }
 
     function Component({ onClick, onEvent }) {
