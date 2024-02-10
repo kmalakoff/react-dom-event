@@ -36,14 +36,14 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "tsds format",
-    "lint": "tsds lint",
+    "format": "biome check --apply-unsafe src/ test/",
     "testworkaround": "tsds test:node && tsds test:browser",
     "test": "tsds test:browser",
     "test:engines": "nvu engines tsds test:node && tsds test:browser",
     "version": "tsds version"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.17",
     "@types/react": "18.2.55",
