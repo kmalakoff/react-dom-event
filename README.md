@@ -7,29 +7,29 @@ For a react-native version, check out [react-native-event](https://www.npmjs.com
 ### Example 1
 
 ```jsx
-import React from 'react';
+import { Fragment, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useEvent, EventProvider } from 'react-dom-event';
 
 function UseEventComponent() {
-  const handler = React.useCallback((event) => {
+  const handler = useCallback((event) => {
     /* do something with any event */
   });
 
   useEvent(handler, [handler]);
-  return <React.Fragment />;
+  return <Fragment />;
 }
 
 const container = document.getElementById('app');
 const root = createRoot(container);
 root.render(
-  <React.Fragment>
+  <Fragment>
     <EventProvider events={['click'] /* default */}>
       <UseEventComponent />
       <button id="demo-1" onClick={() => {}} />
     </EventProvider>
     <button id="demo-2" onClick={() => {}} />
-  </React.Fragment>,
+  </Fragment>,
 );
 
 // any click will call the global event handler
