@@ -2,7 +2,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
-import React from 'react';
+import { Fragment } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 
@@ -27,7 +27,7 @@ describe('react-dom', function () {
   it('click default', function () {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
-      return <React.Fragment />;
+      return <Fragment />;
     }
 
     function Component({ onClick, onEvent }) {
@@ -68,7 +68,7 @@ describe('react-dom', function () {
   it('click explicit', function () {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
-      return <React.Fragment />;
+      return <Fragment />;
     }
 
     function Component({ onClick, onEvent }) {
@@ -103,7 +103,7 @@ describe('react-dom', function () {
   it.skip('click missing provider', function () {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
-      return <React.Fragment />;
+      return <Fragment />;
     }
 
     function Component({ onClick, onEvent }) {
