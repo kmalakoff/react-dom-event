@@ -59,6 +59,7 @@ function useEvent(handler, dependencies) {
     if (!context) {
         throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
     }
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     (0, _react.useEffect)(function() {
         return context.subscribe(handler);
     }, [
