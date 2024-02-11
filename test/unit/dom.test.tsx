@@ -2,29 +2,31 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
-import { Fragment } from 'react';
-import { createRoot, Root } from 'react-dom/client';
+import React, { Fragment } from 'react';
+import { Root, createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 
-import { useEvent, EventProvider } from 'react-dom-event';
+import { EventProvider, useEvent } from 'react-dom-event';
 
-describe('react-dom', function () {
+type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
+
+describe('react-dom', () => {
   let container: HTMLDivElement | null = null;
   let root: Root | null = null;
-  beforeEach(function () {
+  beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
     root = createRoot(container);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     act(() => root.unmount());
     root = null;
     container.remove();
     container = null;
   });
 
-  it('click default', function () {
+  it('click default', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -34,17 +36,19 @@ describe('react-dom', function () {
       return (
         <div>
           <EventProvider>
-            <button id="inside" onClick={onClick} />
+            <button type="button" id="inside" onClick={onClick} />
             <UseEventComponent onEvent={onEvent} />
           </EventProvider>
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
 
-    let clickValue;
+    let clickValue: React.MouseEvent<HTMLButtonElement>;
+    let eventValue: EventTypes;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onClick = (x) => (clickValue = x);
-    let eventValue;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onEvent = (x) => (eventValue = x);
     act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
@@ -65,7 +69,7 @@ describe('react-dom', function () {
     assert.ok(!!eventValue);
   });
 
-  it('click explicit', function () {
+  it('click explicit', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -75,17 +79,19 @@ describe('react-dom', function () {
       return (
         <div>
           <EventProvider events={['click']}>
-            <button id="inside" onClick={onClick} />
+            <button type="button" id="inside" onClick={onClick} />
             <UseEventComponent onEvent={onEvent} />
           </EventProvider>
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
 
-    let clickValue;
+    let clickValue: React.MouseEvent<HTMLButtonElement>;
+    let eventValue: EventTypes;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onClick = (x) => (clickValue = x);
-    let eventValue;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onEvent = (x) => (eventValue = x);
     act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
@@ -100,7 +106,7 @@ describe('react-dom', function () {
   });
 
   // TODO: test on the browser
-  it.skip('click missing provider', function () {
+  it.skip('click missing provider', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -109,9 +115,9 @@ describe('react-dom', function () {
     function Component({ onClick, onEvent }) {
       return (
         <div>
-          <button id="inside" onClick={onClick} />
+          <button type="button" id="inside" onClick={onClick} />
           <UseEventComponent onEvent={onEvent} />
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
