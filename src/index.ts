@@ -39,7 +39,7 @@ export function EventProvider({ events = ['click'], children }: EventProviderPro
         subscribe,
       },
     },
-    children,
+    children
   );
 }
 

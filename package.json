@@ -36,7 +36,7 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "biome check --apply-unsafe src/ test/",
+    "format": "biome check --apply src/ test/",
     "testworkaround": "tsds test:node && tsds test:browser",
     "test": "tsds test:browser",
     "test:engines": "nvu engines tsds test:node && tsds test:browser",
