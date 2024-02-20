@@ -36,28 +36,35 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "tsds format",
-    "lint": "tsds lint",
-    "testworkaround": "tsds test:node && tsds test:browser",
-    "test": "tsds test:browser",
-    "test:engines": "nvu engines tsds test:node && tsds test:browser",
+    "format": "biome check --apply-unsafe src/ test/",
+    "test": "web-test-runner test/**/*.test.jsx --node-resolve --esbuild-target auto --watch",
+    "test2": "npm run test:node && tsds test:browser",
+    "test:engines": "nvu engines npm run test:node && tsds test:browser",
+    "test:node": "tsds link && tsx node_modules/.bin/mocha --watch-extensions ts,tsx test/**/*.tsx",
     "version": "tsds version"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.17",
-    "@types/react": "18.2.55",
-    "jsdom": "^9.12.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native-web": "0.18.4",
-    "ts-dev-stack": "^0.8.12"
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.57",
+    "@web/dev-server-esbuild": "^1.0.2",
+    "@web/dev-server-import-maps": "^0.2.0",
+    "@web/test-runner": "^0.18.0",
+    "@web/test-runner-mocha": "^0.9.0",
+    "jsdom": "9.12.0",
+    "mocha": "^10.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-web": "^0.19.10",
+    "ts-dev-stack": "^0.14.6",
+    "tsx": "^4.7.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=14"
   },
   "tsds": {
     "source": "src/index.ts",
