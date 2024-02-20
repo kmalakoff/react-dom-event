@@ -10,7 +10,7 @@ export default {
  }), importMapsPlugin({
   inject: {
     importMap: {
-      imports: { react: 'https://esm.sh/react', 'react-dom': 'https://esm.sh/react-dom', assert: 'https://esm.sh/assert' },
+      imports: { react: 'https://esm.sh/stable/react@18.2.0/es2022/react.development.mjs', 'react-dom': 'https://esm.sh/stable/react-dom@18.2.0/es2022/react-dom.development.mjs', assert: 'https://esm.sh/assert' },
     },
   },
 })],

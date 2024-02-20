@@ -3,13 +3,12 @@
 
 import assert from 'assert';
 import React, { Fragment } from 'react';
-import { createRoot } from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
+import client from 'react-dom/client';
+import test from 'react-dom/test-utils';
 
 // @ts-ignore
 import { EventProvider, useEvent } from '../..';
 
-const { act } = ReactTestUtils;
 // type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
 
 describe('react-dom', () => {
@@ -54,8 +53,9 @@ describe('react-dom', () => {
     const onClick = (x) => (clickValue = x);
     // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onEvent = (x) => (eventValue = x);
-    act(() => root.render(<button type="button" id="outside" onClick={onClick} />))
-    // root.render(<Component onClick={onClick} onEvent={onEvent} />);
+    root.render(<button type="button" id="outside" onClick={onClick} />, () => {
+
+          // root.render(<Component onClick={onClick} onEvent={onEvent} />);
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
 
@@ -73,6 +73,8 @@ describe('react-dom', () => {
     container.getElementById('outside').click();
     assert.equal(clickValue.target, container.getElementById('outside'));
     assert.ok(!!eventValue);
+
+    })
   });
 
   it('click explicit', () => {
