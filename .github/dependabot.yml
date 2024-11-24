@@ -1,14 +1,14 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/'
+    directory: "/"
     schedule:
       interval: daily
     ignore:
-      - dependency-name: 'jsdom'
-      - dependency-name: 'react-native-web'
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+      - dependency-name: "jsdom"
+      - dependency-name: "react-native-web"
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       # Check for updates to GitHub Actions every weekday
-      interval: 'daily'
+      interval: "daily"
