@@ -36,28 +36,28 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "tsds format",
-    "lint": "tsds lint",
-    "testworkaround": "tsds test:node && tsds test:browser",
-    "test": "tsds test:browser",
+    "format": "biome check --write --unsafe src/ test/",
+    "test": "tsds test:node && tsds test:browser",
     "test:engines": "nvu engines tsds test:node && tsds test:browser",
     "version": "tsds version"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.17",
-    "@types/react": "18.2.55",
-    "jsdom": "^9.12.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native-web": "0.18.4",
-    "ts-dev-stack": "^0.8.12"
+    "@biomejs/biome": "^1.9.4",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "jsdom": "9.12.0",
+    "mocha": "^10.8.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-native-web": "^0.19.13",
+    "ts-dev-stack": "^1.0.1"
   },
   "peerDependencies": {
     "react": "*"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=14"
   },
   "tsds": {
     "source": "src/index.ts",

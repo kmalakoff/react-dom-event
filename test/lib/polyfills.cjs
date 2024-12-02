@@ -1,8 +1,8 @@
 (function ensureDom() {
   if (typeof window !== 'undefined') return; // running in the browser
 
-  var jsdom = require('jsdom');
-  var doc = new jsdom.jsdom('<!doctype html><html><body></body></html>');
+  const jsdom = require('jsdom');
+  const doc = new jsdom.jsdom('<!doctype html><html><body></body></html>');
   global.document = doc;
   global.window = doc.defaultView;
   global.navigator = doc.defaultView.navigator;
