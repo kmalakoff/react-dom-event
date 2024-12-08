@@ -23,7 +23,7 @@ var _react = require("react");
 var EventContext = (0, _react.createContext)(undefined);
 function EventProvider(param) {
     var _param_events = param.events, events = _param_events === void 0 ? [
-        "click"
+        'click'
     ] : _param_events, children = param.children;
     var state = (0, _react.useState)([]);
     var handlers = state[0]; // reduce transpiled array helpers
@@ -57,8 +57,9 @@ function EventProvider(param) {
 function useEvent(handler, dependencies) {
     var context = (0, _react.useContext)(EventContext);
     if (!context) {
-        throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
+        throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
     }
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     (0, _react.useEffect)(function() {
         return context.subscribe(handler);
     }, [
@@ -66,9 +67,4 @@ function useEvent(handler, dependencies) {
         handler
     ].concat(dependencies));
 }
-
-if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
-  Object.defineProperty(exports.default, '__esModule', { value: true });
-  for (var key in exports) exports.default[key] = exports[key];
-  module.exports = exports.default;
-}
+/* CJS INTEROP */ if (exports.__esModule && exports.default) { try { Object.defineProperty(exports.default, '__esModule', { value: true }); for (var key in exports) { exports.default[key] = exports[key]; } } catch (_) {}; module.exports = exports.default; }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext, createElement } from 'react';
+import { createContext, createElement, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 
 export type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
@@ -8,18 +8,13 @@ export type EventContextType = {
   subscribe: (handler: HandlerType) => void;
 };
 
-export const EventContext = createContext<EventContextType | undefined>(
-  undefined,
-);
+export const EventContext = createContext<EventContextType | undefined>(undefined);
 
 export type EventProviderProps = {
   events?: string[];
   children?: ReactNode;
 };
-export function EventProvider({
-  events = ['click'],
-  children,
-}: EventProviderProps) {
+export function EventProvider({ events = ['click'], children }: EventProviderProps) {
   const state = useState<HandlerType[]>([]);
   const handlers = state[0]; // reduce transpiled array helpers
 
@@ -32,32 +27,28 @@ export function EventProvider({
   }
 
   useEffect(() => {
-    events.forEach((event) =>
-      window.document.addEventListener(event, onEvent, true),
-    );
-    return () =>
-      events.forEach((event) =>
-        window.document.removeEventListener(event, onEvent, true),
-      );
+    events.forEach((event) => window.document.addEventListener(event, onEvent, true));
+
+    return () => events.forEach((event) => window.document.removeEventListener(event, onEvent, true));
   });
 
-      return createElement(EventContext.Provider, {
-        value: {
-            subscribe
-        }
-    }, children);
+  return createElement(
+    EventContext.Provider,
+    {
+      value: {
+        subscribe,
+      },
+    },
+    children
+  );
 }
 
 export function useEvent(handler, dependencies) {
   const context = useContext(EventContext);
   if (!context) {
-    throw new Error(
-      'react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event',
-    );
+    throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
   }
 
-  useEffect(
-    () => context.subscribe(handler),
-    [context.subscribe, handler].concat(dependencies),
-  );
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => context.subscribe(handler), [context.subscribe, handler].concat(dependencies));
 }
