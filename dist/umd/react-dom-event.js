@@ -7,7 +7,7 @@
   var EventContext = react.createContext(undefined);
   function EventProvider(param) {
       var _param_events = param.events, events = _param_events === void 0 ? [
-          "click"
+          'click'
       ] : _param_events, children = param.children;
       var state = react.useState([]);
       var handlers = state[0]; // reduce transpiled array helpers
@@ -41,8 +41,9 @@
   function useEvent(handler, dependencies) {
       var context = react.useContext(EventContext);
       if (!context) {
-          throw new Error("react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event");
+          throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
       }
+      // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
       react.useEffect(function() {
           return context.subscribe(handler);
       }, [
@@ -54,8 +55,6 @@
   exports.EventContext = EventContext;
   exports.EventProvider = EventProvider;
   exports.useEvent = useEvent;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=react-dom-event.js.map

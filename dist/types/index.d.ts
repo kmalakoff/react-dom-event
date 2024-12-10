@@ -9,5 +9,5 @@ export type EventProviderProps = {
     events?: string[];
     children?: ReactNode;
 };
-export declare function EventProvider({ events, children, }: EventProviderProps): import("react").FunctionComponentElement<import("react").ProviderProps<EventContextType>>;
+export declare function EventProvider({ events, children }: EventProviderProps): import("react").FunctionComponentElement<import("react").ProviderProps<EventContextType>>;
 export declare function useEvent(handler: any, dependencies: any): void;
