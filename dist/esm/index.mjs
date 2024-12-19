@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext, createElement } from 'react';
+import { createContext, createElement, useContext, useEffect, useState } from 'react';
 export const EventContext = createContext(undefined);
 export function EventProvider({ events = [
     'click'
@@ -27,6 +27,7 @@ export function useEvent(handler, dependencies) {
     if (!context) {
         throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
     }
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(()=>context.subscribe(handler), [
         context.subscribe,
         handler
