@@ -1,0 +1,1 @@
+ignores: ["react-dom-event", "depcheck", "ts-dev-stack", "@types/*", "@biomejs/*", "jsdom"]
