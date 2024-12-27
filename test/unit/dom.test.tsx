@@ -1,30 +1,35 @@
-global.IS_REACT_ACT_ENVIRONMENT = true;
+// @ts-ignore
+(typeof global === 'undefined' ? window : global).IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
+import React, { act } from 'react';
 import { Fragment } from 'react';
-import { createRoot, Root } from 'react-dom/client';
-import { act } from 'react-dom/test-utils';
+import * as ReactDOM from 'react-dom/client';
+import { type Root } from 'react-dom/client';
 
-import { useEvent, EventProvider } from 'react-dom-event';
+// @ts-ignore
+import { EventProvider, useEvent } from 'react-dom-event';
 
-describe('react-dom', function () {
+type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
+
+describe('react-dom', () => {
   let container: HTMLDivElement | null = null;
   let root: Root | null = null;
-  beforeEach(function () {
+  beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
-    root = createRoot(container);
+    root = ReactDOM.createRoot(container);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     act(() => root.unmount());
     root = null;
-    container.remove();
+    container?.remove();
     container = null;
   });
 
-  it('click default', function () {
+  it('click default', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -34,17 +39,19 @@ describe('react-dom', function () {
       return (
         <div>
           <EventProvider>
-            <button id="inside" onClick={onClick} />
+            <button type="button" id="inside" onClick={onClick} />
             <UseEventComponent onEvent={onEvent} />
           </EventProvider>
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
 
-    let clickValue;
+    let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
+    let eventValue: EventTypes | undefined;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onClick = (x) => (clickValue = x);
-    let eventValue;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onEvent = (x) => (eventValue = x);
     act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
@@ -53,19 +60,19 @@ describe('react-dom', function () {
     // inside
     clickValue = undefined;
     eventValue = undefined;
-    act(() => (container.querySelector('#inside') as HTMLElement).click());
-    assert.equal(clickValue.target, container.querySelector('#inside'));
+    act(() => (container?.querySelector('#inside') as HTMLElement).click());
+    assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
 
     // outside
     clickValue = undefined;
     eventValue = undefined;
-    act(() => (container.querySelector('#outside') as HTMLElement).click());
-    assert.equal(clickValue.target, container.querySelector('#outside'));
+    act(() => (container?.querySelector('#outside') as HTMLElement).click());
+    assert.equal(clickValue?.target, container?.querySelector('#outside'));
     assert.ok(!!eventValue);
   });
 
-  it('click explicit', function () {
+  it('click explicit', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -75,17 +82,19 @@ describe('react-dom', function () {
       return (
         <div>
           <EventProvider events={['click']}>
-            <button id="inside" onClick={onClick} />
+            <button type="button" id="inside" onClick={onClick} />
             <UseEventComponent onEvent={onEvent} />
           </EventProvider>
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
 
-    let clickValue;
+    let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
+    let eventValue: EventTypes | undefined;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onClick = (x) => (clickValue = x);
-    let eventValue;
+    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
     const onEvent = (x) => (eventValue = x);
     act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
@@ -94,13 +103,13 @@ describe('react-dom', function () {
     // inside
     clickValue = undefined;
     eventValue = undefined;
-    act(() => (container.querySelector('#inside') as HTMLElement).click());
-    assert.equal(clickValue.target, container.querySelector('#inside'));
+    act(() => (container?.querySelector('#inside') as HTMLElement).click());
+    assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
   });
 
   // TODO: test on the browser
-  it.skip('click missing provider', function () {
+  it.skip('click missing provider', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
@@ -109,19 +118,19 @@ describe('react-dom', function () {
     function Component({ onClick, onEvent }) {
       return (
         <div>
-          <button id="inside" onClick={onClick} />
+          <button type="button" id="inside" onClick={onClick} />
           <UseEventComponent onEvent={onEvent} />
-          <button id="outside" onClick={onClick} />
+          <button type="button" id="outside" onClick={onClick} />
         </div>
       );
     }
 
     try {
       const onClick = () => {
-        /* emptty */
+        /* empty */
       };
       const onEvent = () => {
-        /* emptty */
+        /* empty */
       };
       act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     } catch (err) {
