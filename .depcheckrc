@@ -1,1 +1,1 @@
-ignores: ["react-dom-event", "@types/*", "@biomejs/*", "tsds-web-test-runner", "jsdom"]
+ignores: ["@types/*", "react-dom-event", "@biomejs/*", "tsds-web-test-runner", "jsdom"]
