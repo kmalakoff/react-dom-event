@@ -46,11 +46,12 @@
   "devDependencies": {
     "@types/mocha": "*",
     "@types/node": "*",
-    "@types/react": "*",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "@web/dev-server-import-maps": "*",
     "jsdom": "*",
-    "react": "*",
-    "react-dom": "*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-native-web": "*",
     "tsds-web-test-runner": "*"
   },
