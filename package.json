@@ -44,16 +44,15 @@
     "version": "tsds version"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^22.10.6",
-    "@types/react": "^18.3.1",
-    "@web/dev-server-import-maps": "^0.2.1",
-    "jsdom": "^26.0.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-native-web": "^0.19.13",
-    "tsds-web-test-runner": "^1.13.14"
+    "@types/mocha": "*",
+    "@types/node": "*",
+    "@types/react": "*",
+    "@web/dev-server-import-maps": "*",
+    "jsdom": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-native-web": "*",
+    "tsds-web-test-runner": "*"
   },
   "peerDependencies": {
     "react": "*"
