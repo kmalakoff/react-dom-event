@@ -51,7 +51,6 @@
     "jsdom": "*",
     "react": "*",
     "react-dom": "*",
-    "react-native-web": "*",
     "tsds-web-test-runner": "*"
   },
   "peerDependencies": {
