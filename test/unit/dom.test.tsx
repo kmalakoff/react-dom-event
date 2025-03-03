@@ -108,8 +108,7 @@ describe('react-dom', () => {
     assert.ok(!!eventValue);
   });
 
-  // TODO: test on the browser
-  it.skip('click missing provider', () => {
+  it('click missing provider', () => {
     function UseEventComponent({ onEvent }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
