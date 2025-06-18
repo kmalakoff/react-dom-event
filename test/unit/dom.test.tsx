@@ -3,10 +3,9 @@
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
-import React from 'react';
-import { Fragment } from 'react';
-import * as ReactDOM from 'react-dom/client';
+import React, { Fragment } from 'react';
 import type { Root } from 'react-dom/client';
+import * as ReactDOM from 'react-dom/client';
 
 // @ts-ignore
 import { EventProvider, useEvent } from 'react-dom-event';
@@ -49,10 +48,12 @@ describe('react-dom', () => {
 
     let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
     let eventValue: EventTypes | undefined;
-    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-    const onClick = (x) => (clickValue = x);
-    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-    const onEvent = (x) => (eventValue = x);
+    const onClick = (x) => {
+      clickValue = x;
+    };
+    const onEvent = (x) => {
+      eventValue = x;
+    };
     React.act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
@@ -92,10 +93,12 @@ describe('react-dom', () => {
 
     let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
     let eventValue: EventTypes | undefined;
-    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-    const onClick = (x) => (clickValue = x);
-    // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-    const onEvent = (x) => (eventValue = x);
+    const onClick = (x) => {
+      clickValue = x;
+    };
+    const onEvent = (x) => {
+      eventValue = x;
+    };
     React.act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
