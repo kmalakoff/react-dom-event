@@ -1,5 +1,5 @@
-import { createContext, createElement, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { createContext, createElement, useContext, useEffect, useState } from 'react';
 
 export type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
 export type HandlerType = (event: EventTypes) => void;
@@ -49,6 +49,6 @@ export function useEvent(handler, dependencies) {
     throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Generic dependency array
   useEffect(() => context.subscribe(handler), [context.subscribe, handler].concat(dependencies));
 }
