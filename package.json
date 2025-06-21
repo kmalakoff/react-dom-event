@@ -14,7 +14,10 @@
     "touch",
     "typescript"
   ],
-  "repository": "kmalakoff/react-dom-event",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmalakoff/react-dom-event.git"
+  },
   "license": "MIT",
   "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
   "type": "module",
