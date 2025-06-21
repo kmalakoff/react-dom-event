@@ -43,12 +43,11 @@ export function EventProvider({ events = ['click'], children }: EventProviderPro
   );
 }
 
-export function useEvent(handler, dependencies) {
+export function useEvent(handler: HandlerType, dependencies: unknown[]) {
   const context = useContext(EventContext);
   if (!context) {
     throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Generic dependency array
-  useEffect(() => context.subscribe(handler), [context.subscribe, handler].concat(dependencies));
+  useEffect(() => context.subscribe(handler), [context.subscribe, handler, ...dependencies]);
 }
