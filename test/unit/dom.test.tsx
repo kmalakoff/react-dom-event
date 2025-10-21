@@ -1,4 +1,3 @@
-// @ts-ignore
 (typeof global === 'undefined' ? window : global).IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
@@ -7,7 +6,6 @@ import React, { Fragment } from 'react';
 import type { Root } from 'react-dom/client';
 import * as ReactDOM from 'react-dom/client';
 
-// @ts-ignore
 import { EventProvider, useEvent } from 'react-dom-event';
 
 type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
