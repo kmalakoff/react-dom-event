@@ -19,7 +19,9 @@ export function EventProvider({ events = ['click'], children }: EventProviderPro
   const handlers = state[0]; // reduce transpiled array helpers
 
   function onEvent(event: EventTypes) {
-    handlers.forEach((handler: HandlerType) => handler(event));
+    handlers.forEach((handler: HandlerType) => {
+      handler(event);
+    });
   }
   function subscribe(handler: HandlerType) {
     handlers.push(handler);
@@ -27,9 +29,14 @@ export function EventProvider({ events = ['click'], children }: EventProviderPro
   }
 
   useEffect(() => {
-    events.forEach((event) => window.document.addEventListener(event, onEvent, true));
+    events.forEach((event) => {
+      window.document.addEventListener(event, onEvent, true);
+    });
 
-    return () => events.forEach((event) => window.document.removeEventListener(event, onEvent, true));
+    return () =>
+      events.forEach((event) => {
+        window.document.removeEventListener(event, onEvent, true);
+      });
   });
 
   return createElement(
@@ -49,5 +56,5 @@ export function useEvent(handler: HandlerType, dependencies: unknown[]) {
     throw new Error('react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event');
   }
 
-  useEffect(() => context.subscribe(handler), [context.subscribe, handler, ...dependencies]);
+  useEffect(() => context.subscribe(handler), [context.subscribe, handler, ...dependencies, context]);
 }
