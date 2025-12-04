@@ -30,6 +30,7 @@
     "./umd": "./dist/umd/react-dom-event.cjs"
   },
   "main": "dist/cjs/index.js",
+  "source": "src/index.ts",
   "types": "dist/cjs/index.d.ts",
   "files": [
     "dist"
@@ -64,7 +65,6 @@
     "node": ">=16"
   },
   "tsds": {
-    "source": "src/index.ts",
     "targets": [
       "cjs",
       "esm",
