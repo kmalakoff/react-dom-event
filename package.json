@@ -51,7 +51,7 @@
     "@types/react-dom": "^19.2.3",
     "@web/dev-server-import-maps": "^0.2.1",
     "jsdom": "^27.3.0",
-    "node-version-use": "^2.1.5",
+    "node-version-use": "^2.1.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "ts-dev-stack": "^1.21.3",
