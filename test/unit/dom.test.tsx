@@ -1,4 +1,4 @@
-(typeof global === 'undefined' ? window : global).IS_REACT_ACT_ENVIRONMENT = true;
+((typeof global === 'undefined' ? window : global) as unknown as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
@@ -20,19 +20,19 @@ describe('react-dom', () => {
   });
 
   afterEach(() => {
-    React.act(() => root.unmount());
+    React.act(() => (root as Root).unmount());
     root = null;
     container?.remove();
     container = null;
   });
 
   it('click default', () => {
-    function UseEventComponent({ onEvent }) {
+    function UseEventComponent({ onEvent }: { onEvent: (event: EventTypes) => void }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
     }
 
-    function Component({ onClick, onEvent }) {
+    function Component({ onClick, onEvent }: { onClick: React.MouseEventHandler<HTMLButtonElement>; onEvent: (event: EventTypes) => void }) {
       return (
         <div>
           <EventProvider>
@@ -46,38 +46,38 @@ describe('react-dom', () => {
 
     let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
     let eventValue: EventTypes | undefined;
-    const onClick = (x) => {
+    const onClick = (x: React.MouseEvent<HTMLButtonElement>) => {
       clickValue = x;
     };
-    const onEvent = (x) => {
+    const onEvent = (x: EventTypes) => {
       eventValue = x;
     };
-    React.act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
+    React.act(() => (root as Root).render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
 
     // inside
-    clickValue = undefined;
-    eventValue = undefined;
+    clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
+    eventValue = undefined as EventTypes | undefined;
     React.act(() => (container?.querySelector('#inside') as HTMLElement).click());
     assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
 
     // outside
-    clickValue = undefined;
-    eventValue = undefined;
+    clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
+    eventValue = undefined as EventTypes | undefined;
     React.act(() => (container?.querySelector('#outside') as HTMLElement).click());
     assert.equal(clickValue?.target, container?.querySelector('#outside'));
     assert.ok(!!eventValue);
   });
 
   it('click explicit', () => {
-    function UseEventComponent({ onEvent }) {
+    function UseEventComponent({ onEvent }: { onEvent: (event: EventTypes) => void }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
     }
 
-    function Component({ onClick, onEvent }) {
+    function Component({ onClick, onEvent }: { onClick: React.MouseEventHandler<HTMLButtonElement>; onEvent: (event: EventTypes) => void }) {
       return (
         <div>
           <EventProvider events={['click']}>
@@ -91,31 +91,31 @@ describe('react-dom', () => {
 
     let clickValue: React.MouseEvent<HTMLButtonElement> | undefined;
     let eventValue: EventTypes | undefined;
-    const onClick = (x) => {
+    const onClick = (x: React.MouseEvent<HTMLButtonElement>) => {
       clickValue = x;
     };
-    const onEvent = (x) => {
+    const onEvent = (x: EventTypes) => {
       eventValue = x;
     };
-    React.act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
+    React.act(() => (root as Root).render(<Component onClick={onClick} onEvent={onEvent} />));
     assert.equal(clickValue, undefined);
     assert.equal(eventValue, undefined);
 
     // inside
-    clickValue = undefined;
-    eventValue = undefined;
+    clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
+    eventValue = undefined as EventTypes | undefined;
     React.act(() => (container?.querySelector('#inside') as HTMLElement).click());
     assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
   });
 
   it('click missing provider', () => {
-    function UseEventComponent({ onEvent }) {
+    function UseEventComponent({ onEvent }: { onEvent: (event: EventTypes) => void }) {
       useEvent(onEvent, [onEvent]);
       return <Fragment />;
     }
 
-    function Component({ onClick, onEvent }) {
+    function Component({ onClick, onEvent }: { onClick: React.MouseEventHandler<HTMLButtonElement>; onEvent: (event: EventTypes) => void }) {
       return (
         <div>
           <button type="button" id="inside" onClick={onClick} />
@@ -132,9 +132,9 @@ describe('react-dom', () => {
       const onEvent = () => {
         /* empty */
       };
-      React.act(() => root.render(<Component onClick={onClick} onEvent={onEvent} />));
-    } catch (err) {
-      assert.ok(err.message.indexOf('subscribe not found on context') >= 0);
+      React.act(() => (root as Root).render(<Component onClick={onClick} onEvent={onEvent} />));
+    } catch (err: unknown) {
+      assert.ok((err as Error).message.indexOf('subscribe not found on context') >= 0);
     }
   });
 });
