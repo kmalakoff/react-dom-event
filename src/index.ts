@@ -30,12 +30,12 @@ export function EventProvider({ events = ['click'], children }: EventProviderPro
 
   useEffect(() => {
     events.forEach((event) => {
-      window.document.addEventListener(event, onEvent, true);
+      window.document.addEventListener(event, onEvent as EventListener, true);
     });
 
     return () =>
       events.forEach((event) => {
-        window.document.removeEventListener(event, onEvent, true);
+        window.document.removeEventListener(event, onEvent as EventListener, true);
       });
   });
 
