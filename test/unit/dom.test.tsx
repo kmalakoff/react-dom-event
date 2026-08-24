@@ -1,4 +1,5 @@
 ((typeof global === 'undefined' ? window : global) as unknown as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
+
 import '../lib/polyfills.cjs';
 
 import assert from 'assert';
@@ -59,14 +60,14 @@ describe('react-dom', () => {
     // inside
     clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
     eventValue = undefined as EventTypes | undefined;
-    React.act(() => (container?.querySelector('#inside') as HTMLElement).click());
+    React.act(() => (container?.querySelector('#inside') as HTMLElement | null)?.click());
     assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
 
     // outside
     clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
     eventValue = undefined as EventTypes | undefined;
-    React.act(() => (container?.querySelector('#outside') as HTMLElement).click());
+    React.act(() => (container?.querySelector('#outside') as HTMLElement | null)?.click());
     assert.equal(clickValue?.target, container?.querySelector('#outside'));
     assert.ok(!!eventValue);
   });
@@ -104,7 +105,7 @@ describe('react-dom', () => {
     // inside
     clickValue = undefined as React.MouseEvent<HTMLButtonElement> | undefined;
     eventValue = undefined as EventTypes | undefined;
-    React.act(() => (container?.querySelector('#inside') as HTMLElement).click());
+    React.act(() => (container?.querySelector('#inside') as HTMLElement | null)?.click());
     assert.equal(clickValue?.target, container?.querySelector('#inside'));
     assert.ok(!!eventValue);
   });
