@@ -40,8 +40,8 @@
     "docs": "tsds docs",
     "format": "tsds format",
     "prepublishOnly": "tsds validate",
-    "test": "tsds test:browser --config wtr.config.mjs",
-    "test:engines": "tsds test:browser --config wtr.config.mjs",
+    "test": "tsds test:browser --config wtr.config.mjs && tsds test:node --no-timeouts",
+    "test:engines": "tsds test:browser --config wtr.config.mjs && nvu engines tsds test:node --no-timeouts",
     "version": "tsds version"
   },
   "devDependencies": {
@@ -63,6 +63,13 @@
   },
   "engines": {
     "node": ">=16"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "node-filename-to-dist-paths": true,
+    "node-semvers": true,
+    "node-version-use": true,
+    "thread-sleep-compat": true
   },
   "tsds": {
     "targets": [
