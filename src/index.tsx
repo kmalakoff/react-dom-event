@@ -20,7 +20,7 @@ export function EventProvider({
   children,
 }: EventProviderProps) {
   const state = React.useState<HandlerType[]>([]);
-  const handlers = state[0]; // reduce transpiled array helpers 
+  const handlers = state[0]; // reduce transpiled array helpers
 
   function onEvent(event: EventTypes) {
     handlers.forEach((handler: HandlerType) => handler(event));
@@ -47,15 +47,15 @@ export function EventProvider({
 }
 
 export function useEvent(handler, dependencies) {
-  const { subscribe } = React.useContext(EventContext);
-  React.useEffect(
-    () => subscribe(handler),
-    [subscribe, handler].concat(dependencies),
-  );
-}
+  const context = React.useContext(EventContext);
+  if (!context) {
+    throw new Error(
+      'react-dom-event: subscribe not found on context. You might be missing the EventProvider or have multiple instances of react-dom-event',
+    );
+  }
 
-export default {
-  EventContext,
-  EventProvider,
-  useEvent
+  React.useEffect(
+    () => context.subscribe(handler),
+    [context.subscribe, handler].concat(dependencies),
+  );
 }
