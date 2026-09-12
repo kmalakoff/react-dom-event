@@ -1,10 +1,16 @@
-## react-dom-event
+# react-dom-event
 
-React context for subscribing to all DOM user interaction events.
+React context for subscribing to selected DOM user interaction events.
 
 For a react-native version, check out [react-native-event](https://www.npmjs.com/package/react-native-event)
 
-### Example 1
+## Install
+
+```sh
+npm install react react-dom react-dom-event
+```
+
+## Use
 
 ```tsx
 import { Fragment, useCallback } from "react";
@@ -14,7 +20,7 @@ import { useEvent, EventProvider } from "react-dom-event";
 function UseEventComponent() {
   const handler = useCallback((event) => {
     /* do something with any event */
-  });
+  }, []);
 
   useEvent(handler, [handler]);
   return <Fragment />;

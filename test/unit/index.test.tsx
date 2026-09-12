@@ -11,7 +11,9 @@ import { EventProvider, useEvent } from 'react-dom-event';
 
 type EventTypes = MouseEvent | TouchEvent | KeyboardEvent;
 
-describe('react-dom', () => {
+const suite = typeof document === 'undefined' ? describe.skip : describe;
+
+suite('react-dom', () => {
   let container: HTMLDivElement | null = null;
   let root: Root | null = null;
   beforeEach(() => {
