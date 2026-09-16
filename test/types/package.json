@@ -1,0 +1,11 @@
+{
+  "name": "react-dom-event-type-consumer",
+  "private": true,
+  "type": "module",
+  "source": "src/index.ts",
+  "tsds": {
+    "targets": [
+      "cjs"
+    ]
+  }
+}

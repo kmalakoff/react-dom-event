@@ -1,12 +1,6 @@
 const assert = require('assert');
-
-let umd = null;
-try {
-  umd = require('react-dom-event/umd');
-} catch (_) {
-  umd = require('react-dom-event/dist/umd/react-dom-event.cjs');
-}
-const reactDomEvent = typeof window !== 'undefined' ? window.reactDomEvent : umd.default || umd;
+const umd = require('react-dom-event/umd');
+const reactDomEvent = umd.default || umd;
 const { EventContext, useEvent, EventProvider } = reactDomEvent;
 
 describe('exports umd', () => {
