@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, { type ReactNode } from 'react';
+
+const { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef } = React;
 
 export type EventTypes = Event;
 export type HandlerType = (event: EventTypes) => void;

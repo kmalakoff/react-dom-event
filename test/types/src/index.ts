@@ -11,7 +11,10 @@ cleanup();
 cleanup();
 const props: EventProviderProps = { events: ['click', 'keydown', 'touchstart'], children: null };
 const provider = EventProvider(props);
-useEvent(handler, dependencies);
+export function Consumer() {
+  useEvent(handler, dependencies);
+  return null;
+}
 // @ts-expect-error: subscribe requires a DOM event handler
 context.subscribe('invalid handler');
 void provider;

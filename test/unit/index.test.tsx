@@ -1,27 +1,24 @@
 ((typeof global === 'undefined' ? window : global) as unknown as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
-import '../lib/polyfills.cjs';
-
 import assert from 'assert';
 import React, { Fragment, useContext, useEffect } from 'react';
-import type { Root } from 'react-dom/client';
-import * as ReactDOM from 'react-dom/client';
 
 import { EventContext, EventProvider, type HandlerType, useEvent } from 'react-dom-event';
+import { act, mount, unmount } from '../lib/react-dom.tsx';
 
 const suite = typeof document === 'undefined' ? describe.skip : describe;
 
 suite('react-dom', () => {
   let container: HTMLDivElement | null = null;
-  let root: Root | null = null;
+  let root: ReturnType<typeof mount> | null = null;
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
-    root = ReactDOM.createRoot(container);
+    root = mount(container);
   });
 
   afterEach(() => {
-    React.act(() => (root as Root).unmount());
+    unmount(root);
     root = null;
     container?.remove();
     container = null;
@@ -32,7 +29,9 @@ suite('react-dom', () => {
     assert.ok(view);
     if (type === 'touchstart' && typeof view.TouchEvent !== 'function') return false;
     const event = type === 'click' ? new view.MouseEvent(type, { bubbles: true }) : type === 'keydown' ? new view.KeyboardEvent(type, { bubbles: true, key: 'Enter' }) : new view.TouchEvent(type, { bubbles: true });
-    React.act(() => target.dispatchEvent(event));
+    act(() => {
+      target.dispatchEvent(event);
+    });
     return true;
   }
 
@@ -46,8 +45,8 @@ suite('react-dom', () => {
     const received: string[] = [];
     const childEvents: string[] = [];
     const onEvent: HandlerType = (event) => received.push(event.type);
-    React.act(() =>
-      (root as Root).render(
+    act(() =>
+      root?.render(
         <EventProvider events={events}>
           <UseEventComponent onEvent={onEvent} />
           <button
@@ -98,11 +97,11 @@ suite('react-dom', () => {
       );
     }
 
-    React.act(() => (root as Root).render(<Component version="first" />));
+    act(() => root?.render(<Component version="first" />));
     const target = () => container?.querySelector('#target') as HTMLButtonElement;
     dispatch('click', target());
     events = ['keydown'];
-    React.act(() => (root as Root).render(<Component version="second" />));
+    act(() => root?.render(<Component version="second" />));
     dispatch('click', target());
     dispatch('keydown', target());
     assert.deepEqual(received, ['first', 'second']);
@@ -115,8 +114,8 @@ suite('react-dom', () => {
       return null;
     }
 
-    React.act(() =>
-      (root as Root).render(
+    act(() =>
+      root?.render(
         <EventProvider>
           <Listener name="outer" />
           <EventProvider>
@@ -154,8 +153,8 @@ suite('react-dom', () => {
       return null;
     }
 
-    React.act(() =>
-      (root as Root).render(
+    act(() =>
+      root?.render(
         <EventProvider>
           <SubscriptionProbe />
           <button type="button" />
@@ -181,8 +180,8 @@ suite('react-dom', () => {
       return null;
     }
 
-    React.act(() =>
-      (root as Root).render(
+    act(() =>
+      root?.render(
         <EventProvider>
           <DuplicateProbe />
           <button type="button" />
@@ -197,12 +196,20 @@ suite('react-dom', () => {
   });
 
   it('throws when useEvent has no provider', () => {
+    let capturedError: unknown;
     function MissingProvider() {
-      useEvent(() => undefined, []);
+      try {
+        // biome-ignore lint/correctness/useHookAtTopLevel: Capture the expected missing-provider error from this unconditional hook call.
+        useEvent(() => undefined, []);
+      } catch (error) {
+        capturedError = error;
+      }
       return null;
     }
 
-    assert.throws(() => React.act(() => (root as Root).render(<MissingProvider />)), /subscribe not found on context/);
+    act(() => root?.render(<MissingProvider />));
+    assert.ok(capturedError instanceof Error);
+    assert.ok(/subscribe not found on context/.test(capturedError.message));
   });
 
   it('defers subscriptions added during dispatch until the next event', () => {
@@ -223,8 +230,8 @@ suite('react-dom', () => {
       }, [context]);
       return null;
     }
-    React.act(() =>
-      (root as Root).render(
+    act(() =>
+      root?.render(
         <EventProvider>
           <Probe />
           <button type="button" />
@@ -259,9 +266,9 @@ suite('react-dom', () => {
         </EventProvider>
       );
     }
-    React.act(() => (root as Root).render(<App mounted />));
+    act(() => root?.render(<App mounted />));
     dispatch('click', container?.querySelector('button') as HTMLButtonElement);
-    React.act(() => (root as Root).render(<App mounted={false} />));
+    act(() => root?.render(<App mounted={false} />));
     dispatch('click', container?.querySelector('button') as HTMLButtonElement);
     assert.deepEqual(received, ['event']);
     assert.strictEqual(contexts[0], contexts[1]);
