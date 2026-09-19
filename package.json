@@ -41,6 +41,7 @@
     "format": "tsds format",
     "prepublishOnly": "tsds validate",
     "test": "npm run test:types && node test/lib/browser.mjs && npm run test:node",
+    "test:browser:checkpoints": "node test/lib/browser-checkpoints.mjs",
     "test:engines": "npm run build && node test/lib/test-floor.ts",
     "test:node": "tsds test:node --no-timeouts test/exports/import.test.ts test/exports/import.test.mjs test/exports/require.test.cjs test/exports/umd.test.cjs",
     "test:types": "npm run build && node test/types/run.mjs",

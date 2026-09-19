@@ -7,18 +7,17 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const esbuild = require('esbuild');
 const root = fileURLToPath(new URL('../..', import.meta.url));
-const profileVersions = {
-  minimum: { react: '16.8.0', 'react-dom': '16.8.0' },
-  current: { react: '19.3.0', 'react-dom': '19.3.0' },
-};
 
 function profileRequire(profile) {
   return createRequire(path.join(root, 'test/browser', profile, 'package.json'));
 }
 
 function verifyProfileInstall(profile) {
-  const versions = profileVersions[profile];
-  if (!versions) throw new Error(`Unknown React browser profile: ${profile}`);
+  const manifest = JSON.parse(readFileSync(path.join(root, 'test/browser', profile, 'package.json'), 'utf8'));
+  const versions = { react: manifest.dependencies?.react, 'react-dom': manifest.dependencies?.['react-dom'] };
+  if (!versions.react || !versions['react-dom'] || !/^\d+\.\d+\.\d+$/.test(versions.react) || !/^\d+\.\d+\.\d+$/.test(versions['react-dom'])) {
+    throw new Error(`${profile} must pin exact React and ReactDOM versions in its package manifest`);
+  }
   const profileNodeModules = path.join(root, 'test/browser', profile, 'node_modules');
   const profileRequireFor = profileRequire(profile);
   for (const [packageName, expectedVersion] of Object.entries(versions)) {
@@ -32,6 +31,19 @@ function verifyProfileInstall(profile) {
       throw new Error(`${profile} ${packageName} expected ${expectedVersion}, got ${version}`);
     }
     console.log(`React browser profile ${profile}: ${packageName}@${version}`);
+  }
+  return { profileRequireFor, reactDomVersion: versions['react-dom'] };
+}
+
+function hasClientEntry(profileRequireFor, reactDomVersion) {
+  const major = Number.parseInt(reactDomVersion, 10);
+  if (major < 18) return false;
+  try {
+    profileRequireFor.resolve('react-dom/client');
+    return true;
+  } catch (error) {
+    if (error?.code === 'MODULE_NOT_FOUND' || error?.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED') return false;
+    throw error;
   }
 }
 
@@ -79,7 +91,7 @@ async function bundle(profile, packageName, output) {
 }
 
 export async function prepareReactProfile(profile) {
-  verifyProfileInstall(profile);
+  const { profileRequireFor, reactDomVersion } = verifyProfileInstall(profile);
   const profileRoot = path.join(root, '.tmp/react-browser', profile);
   await mkdir(profileRoot, { recursive: true });
   await bundle(profile, 'react', `.tmp/react-browser/${profile}/react-impl.js`);
@@ -88,7 +100,7 @@ export async function prepareReactProfile(profile) {
   await writeBridge(profile, 'react-dom', 'react-dom-impl.js', profileRequire(profile)('react-dom'));
   await bundle(profile, 'react-dom/test-utils', `.tmp/react-browser/${profile}/react-dom-test-utils-impl.js`);
   await writeBridge(profile, 'react-dom/test-utils', 'react-dom-test-utils-impl.js', ['act']);
-  if (profile === 'current') {
+  if (hasClientEntry(profileRequireFor, reactDomVersion)) {
     await bundle(profile, 'react-dom/client', `.tmp/react-browser/${profile}/react-dom-client-impl.js`);
     await writeBridge(profile, 'react-dom/client', 'react-dom-client-impl.js', profileRequire(profile)('react-dom/client'));
   } else {
