@@ -1,0 +1,8 @@
+{
+  "name": "react-dom-event-node-floor",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "16.8.0"
+  }
+}

@@ -40,8 +40,11 @@
     "docs": "tsds docs",
     "format": "tsds format",
     "prepublishOnly": "tsds validate",
-    "test": "tsds test:browser --config wtr.config.mjs && tsds test:node --no-timeouts",
-    "test:engines": "tsds test:browser --config wtr.config.mjs && nvu engines tsds test:node --no-timeouts",
+    "test": "npm run test:types && node test/lib/browser.mjs && npm run test:node",
+    "test:browser:checkpoints": "node test/lib/browser-checkpoints.mjs",
+    "test:engines": "npm run build && node test/lib/test-floor.ts",
+    "test:node": "tsds test:node --no-timeouts test/exports/import.test.ts test/exports/import.test.mjs test/exports/require.test.cjs test/exports/umd.test.cjs",
+    "test:types": "npm run build && node test/types/run.mjs",
     "version": "tsds version"
   },
   "devDependencies": {
@@ -50,16 +53,19 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@web/dev-server-import-maps": "^0.3.0",
-    "jsdom": "^30.0.1",
+    "assert": "^1.5.0",
+    "esbuild": "^0.28.2",
+    "fs-remove-compat": "*",
     "node-version-use": "*",
     "react": "*",
     "react-dom": "*",
+    "tar": "^7.5.22",
     "ts-dev-stack": "*",
     "tsds-config": "*",
     "tsds-web-test-runner": "*"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">=16.8.0"
   },
   "engines": {
     "node": ">=16"
