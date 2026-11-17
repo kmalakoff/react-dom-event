@@ -1,7 +1,7 @@
 ((typeof global === 'undefined' ? window : global) as unknown as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true;
 
 import assert from 'assert';
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Component, Fragment, type ReactNode, useContext, useEffect } from 'react';
 
 import { EventContext, EventProvider, type HandlerType, useEvent } from 'react-dom-event';
 import { act, mount, unmount } from '../lib/react-dom.tsx';
@@ -197,17 +197,40 @@ suite('react-dom', () => {
 
   it('throws when useEvent has no provider', () => {
     let capturedError: unknown;
-    function MissingProvider() {
-      try {
-        // biome-ignore lint/correctness/useHookAtTopLevel: Capture the expected missing-provider error from this unconditional hook call.
-        useEvent(() => undefined, []);
-      } catch (error) {
+    class Boundary extends Component<{ children?: ReactNode }, { failed: boolean }> {
+      state = { failed: false };
+      static getDerivedStateFromError() {
+        return { failed: true };
+      }
+      componentDidCatch(error: unknown) {
         capturedError = error;
       }
+      render() {
+        return this.state.failed ? null : this.props.children;
+      }
+    }
+    function MissingProvider() {
+      useEvent(() => undefined, []);
       return null;
     }
 
-    act(() => root?.render(<MissingProvider />));
+    // React reports a caught render error to window.onerror in development; keep it from failing the run
+    const originalOnError = window.onerror;
+    window.onerror = () => true;
+    const originalConsoleError = console.error;
+    console.error = () => undefined;
+    try {
+      act(() =>
+        root?.render(
+          <Boundary>
+            <MissingProvider />
+          </Boundary>
+        )
+      );
+    } finally {
+      console.error = originalConsoleError;
+      window.onerror = originalOnError;
+    }
     assert.ok(capturedError instanceof Error);
     assert.ok(/subscribe not found on context/.test(capturedError.message));
   });
